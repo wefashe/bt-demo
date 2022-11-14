@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+// 编译相关参数
+compileJava {
+       sourceCompatibility = JavaVersion.VERSION_1_8
+       targetCompatibility = JavaVersion.VERSION_1_8
+       options.encoding = 'UTF-8'
+       options.compilerArgs = [
+                   '-Xlint:all', '-Xlint:-processing'
+       ]
+}
+
+repositories {
+    maven {
+        url 'https://maven.aliyun.com/repository/public/'
+    }
+    maven {
+        url 'https://maven.aliyun.com/repository/spring/'
+    }
+    mavenLocal()
+    mavenCentral()
+}
+
+task createDirs {
+    sourceSets*.java.srcDirs*.each { it.mkdirs() }
+    sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+}
+
+task showRepos {
+    doLast {
+        repositories.each {
+            println "repository: ${it.name} ('${it.url}')"
+        }
+    }
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'commons-codec:commons-codec:1.15'
+    implementation 'org.projectlombok:lombok:1.18.24'
+}
+
+test {
+    useJUnitPlatform()
+}
